@@ -1,0 +1,14 @@
+{
+    "name": "zinovyev/php-fsm",
+    "description": "PHP Finite-state Machine",
+    "license": "GPLv2",
+    "authors": [
+        {
+            "name": "Ivan Zinovyev",
+            "email": "ivan@zinovyev.net"
+        }
+    ],
+    "require": {
+
+    }
+}
