@@ -6,7 +6,7 @@ use FSM\Context\ContextInterface;
 /**
  * Basic State interface
  * 
- * @author Ivan Zinovyev <ivan@zinovyev.net>
+ * @author Ivan Zinovyev <vanyazin@gmail.com>
  */
 interface StateInterface
 {

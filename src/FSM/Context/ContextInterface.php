@@ -3,9 +3,30 @@ namespace FSM\Context;
 
 use FSM\State\StateInterface;
 
+/**
+ * Basic context interface
+ * 
+ * @author Ivan Zinovyev <vanyazin@gmail.com>
+ */
 interface ContextInterface
 {
+    /**
+     * Get current state
+     * 
+     * @return \FSM\State\StateInterface
+     */
     public function getState();
+
+    /**
+     * Set current state
+     * 
+     * @param \FSM\State\StateInterface $state
+     * @return \FSM\Context\ContextInterface
+     */
     public function setState(StateInterface $state);
-    public function request();
+
+    /**
+     * Delegate action handle to state
+     */
+    public function delegate();
 }

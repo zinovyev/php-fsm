@@ -1,2 +1,5 @@
 /vendor/
 test.php
+.project
+.buildpath
+.settings

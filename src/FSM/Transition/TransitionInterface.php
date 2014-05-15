@@ -13,26 +13,37 @@ interface TransitionInterface
     public function getName();
 
     /**
-     * Check if transition is acceptible for the current context state
+     * Set transition name
+     * 
+     * @return \FSM\Transition\TransitionInterface
      */
-    public function isAcceptible();
-
+    public function setName($name);
+    
     /**
      * Bind source state
      * 
-     * @param FSM\State\StateInterface
+     * @param \FSM\State\StateInterface
      */
     public function setSourceState(StateInterface $state);
 
     /**
      * Bind target state
      * 
-     * @param FSM\State\StateInterface
+     * @param \FSM\State\StateInterface
      */
     public function setTargetState(StateInterface $state);
 
     /**
+     * Check if transition is acceptible for the current context state
+     * 
+     * @return boolean
+     */
+    public function isAcceptible();
+    
+    /**
      * Accept transition
+     * 
+     * @return \FSM\Transition\TransitionInterface
      */
     public function accept();
 }
