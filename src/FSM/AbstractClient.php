@@ -15,7 +15,7 @@ abstract class AbstractClient
 	/**
      * @var \FSM\Context\ContextInterface
      */
-	protected $context = null;
+	protected $context;
 	/**
      * @var \FSM\Context\ContextInterface[]
      */
