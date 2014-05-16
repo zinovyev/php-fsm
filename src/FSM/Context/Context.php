@@ -41,8 +41,8 @@ class Context implements ContextInterface, ContextHasPropertiesInterface
         return $this;
     }
   
-    public function delegate()
+    public function delegateAction($name, $properties = array())
     {
-        
+        return $this->state->handleAction($name, $properties);
     }
 }

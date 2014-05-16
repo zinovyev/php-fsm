@@ -28,5 +28,5 @@ interface ContextInterface
     /**
      * Delegate action handle to state
      */
-    public function delegate();
+    public function delegateAction($name, $properties = array());
 }

@@ -78,8 +78,8 @@ class State implements StateInterface
         return $this;
     }
     
-    public function handle()
+    public function handleAction($name, $parameters = array())
     {
-        return call_user_func_array($name, $parameters);
+        return call_user_func_array(array($this, $name), $parameters);
     }
 }
