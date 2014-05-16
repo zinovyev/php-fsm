@@ -21,13 +21,11 @@ class Client extends AbstractClient
      */
     public function addTransition($name, $sourceStateName, $targetStateName)
     {
-        $transition = new Transition(
-	        $name,
-            $this->getStateByName($targetStateName),
-            $this->getStateByName($sourceStateName)
+        parent::addTransition(
+            new Transition($name),
+            $this->getStateByName($sourceStateName),
+            $this->getStateByName($targetStateName)
         );
-        
-        parent::addTransition(new Transition(), $sourceState, $targetState);
         
         return $this;
     }

@@ -30,6 +30,11 @@ class State implements StateInterface
         return $this->name;
     }
     
+    public function getType()
+    {
+        return $this->type;
+    }
+    
     public function getContext()
     {
         return $this->context;
@@ -66,7 +71,7 @@ class State implements StateInterface
     
     public function setType($type)
     {
-        if ($type === self::TYPE_INITIAL || $type === self::TYPE_REGULAR || $type === self::TYPE_INITIAL) {
+        if ($type === self::TYPE_INITIAL || $type === self::TYPE_REGULAR || $type === self::TYPE_FINITE) {
             $this->type = $type;
         }
         

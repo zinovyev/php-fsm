@@ -99,8 +99,8 @@ class Transition implements TransitionInterface
     {
         return
             $this->sourceState instanceof StateInterface
-            && $this->targetState instanceof TargetInterface
-            && $this->sourceState->getContext()->getState() === $sourceState;
+            && $this->targetState instanceof StateInterface
+            && ($this->sourceState->getContext()->getState() === $this->sourceState);
     }
     
     /**

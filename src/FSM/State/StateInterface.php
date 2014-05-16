@@ -33,6 +33,13 @@ interface StateInterface
     public function getName();
 
     /**
+     * Get transition type
+     * 
+     * @return integer
+     */
+    public function getType();
+    
+    /**
      * Get related context
      * 
      * @return \FSM\Context\ContextInterface

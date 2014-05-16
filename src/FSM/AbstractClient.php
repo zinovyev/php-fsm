@@ -56,8 +56,8 @@ abstract class AbstractClient
      * @return \FSM\State\StateInterface
      */
 	public function getCurrentState()
-    {
-		if (!($this->context instanceof ContextInterfaces)) {
+    {   
+		if (!($this->context instanceof ContextInterface)) {
 			throw new \Exception('Can not get current state. Context schould be set first.');
 		}
 
@@ -75,7 +75,6 @@ abstract class AbstractClient
         if (array_key_exists($name, $this->states)) {
             return $this->states[$name];
         }
-
 
 		return null;
 	}
@@ -100,8 +99,8 @@ abstract class AbstractClient
      * @return \FSM\AbstractClient
      */
 	public function addState(StateInterface $state)
-    {
-		if (!($this->context instanceof ContextInterfaces)) {
+    {        
+		if (!($this->context instanceof ContextInterface)) {
 			throw new \Exception("Context schould be set first.");
 		}
         if (!($state->getName())) {
@@ -111,7 +110,7 @@ abstract class AbstractClient
             throw new \Exception("Can not register state. The state with the same name already exists.");
         }        
         if (!($state->isFinite() || $state->isInitial() || $state->isRegular())) {
-            throw new \Exception("Can not add state withou a type.");
+            throw new \Exception("Can not add state without a type.");
         }
 
 		$state->setContext($this->context);
@@ -147,6 +146,18 @@ abstract class AbstractClient
 		return $this;
 	}
 
+	public function setInitialState($state)
+	{
+	    if (!$state->isInitial()) {
+	        throw new \Exception("The first state should be of type Initial.");
+	    }
+	    if (!in_array($state, $this->states)) {
+	        throw new \Exception("State was never registered.s");
+	    }
+	    
+	    $this->context->setState($state);
+	}
+	
     /**
      * Accept transition
      * 
@@ -161,13 +172,16 @@ abstract class AbstractClient
         if (!$transition->isAcceptible()) {
             throw new \Exception("Transition can not be accepted");
         }
-        if ($this->getStatesByType(StateInterface::TYPE_FINITE)) {
+        if (!$this->getStatesByType(StateInterface::TYPE_FINITE)) {
             throw new \Exception("Can not accept transition. Not any state of type finite exists.");
         }
-        if ($this->getStatesByType(StateInterface::TYPE_INITIAL)) {
+        if (!$this->getStatesByType(StateInterface::TYPE_INITIAL)) {
             throw new \Exception("Can not accept transition. Not any state of type inital exists.");
         }
-        if ($this->context->getCurrentState()->isFinite()) {
+        if (!($this->context->getState() instanceof StateInterface)) {
+            throw new \Exception("The initial state should be set first.");
+        }
+        if ($this->context->getState()->isFinite()) {
             throw new \Exception("Can not run transition in the finite state.");
         }
 
