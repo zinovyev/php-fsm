@@ -3,6 +3,7 @@ php-fsm
 
 PHP Final State Machine
 
+Example code:
 ```php
 <?php
 require_once('vendor/autoload.php');
@@ -26,14 +27,12 @@ $stateMachine = new StateMachine();
 $stateMachine->addState($stateA);
 $stateMachine->addState($stateB);
 $stateMachine->setInitialState($stateA);
-$stateMachine->addTransition('initial', 'stateA', 'stateB');
+$stateMachine->createTransition('initial', 'stateA', 'stateB');
 
 var_dump('stateMachine is at state: ' . $stateMachine->getCurrentState()->getName());
 
 // Accept transition
-$stateMachine->acceptTransition(
-    $stateMachine->getTransitionByName('initial')
-);
+$stateMachine->acceptTransitionByName('initial');
 
 var_dump('stateMachine is at state: ' . $stateMachine->getCurrentState()->getName());
 ```
