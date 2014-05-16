@@ -15,16 +15,30 @@ class Client extends AbstractClient
     {
         $this->context = new Context();
     }
-    
+
     /**
-     * @see \FSM\AbstractClient::addTransition()
+     * Transition factory
+     * 
+     * @param string $name
+     * @param string $sourceStateName
+     * @param string $targetStateName
+     * @return \FSM\Client
      */
-    public function addTransition($name, $sourceStateName, $targetStateName)
+    public function createTransition($name, $sourceStateName, $targetStateName)
     {
-        parent::addTransition(
+        $this->addTransition(
             new Transition($name),
             $this->getStateByName($sourceStateName),
-            $this->getStateByName($targetStateName)
+            $this->getStateByName($targetStateName)      
+        );
+        
+        return $this;
+    }
+    
+    public function acceptTransitionByName($name)
+    {
+        $this->acceptTransition(
+            $this->getTransitionByName($name)
         );
         
         return $this;
