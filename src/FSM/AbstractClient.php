@@ -193,11 +193,11 @@ abstract class AbstractClient
     /**
      * Delegate action call to the context
      */
-    public function callContextAction($name, $parameters)
-    {
-        $this->context->delegate($name, $parameters);
+    public function callAction($name, array $parameters = array())
+    {   
+        return $this->context->delegateAction($name, $parameters);
     }
-
+    
     /**
      * Select states by type
      * 

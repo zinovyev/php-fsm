@@ -1,6 +1,7 @@
 {
     "name": "zinovyev/php-fsm",
     "description": "PHP Finite-state Machine",
+    "keywords": ["finite-state", "machine", "automaton", "statemachine", "state", "transition"]
     "license": "GPLv2",
     "authors": [
         {

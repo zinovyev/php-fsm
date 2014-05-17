@@ -78,5 +78,5 @@ interface StateInterface
     /**
      * Handle state action
      */
-    public function handleAction($name, $properties = array());
+    public function handleAction($name, array $properties);
 }

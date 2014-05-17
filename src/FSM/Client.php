@@ -35,6 +35,12 @@ class Client extends AbstractClient
         return $this;
     }
     
+    /**
+     * Accept transaction using its name
+     * 
+     * @param string $name
+     * @return \FSM\Client
+     */
     public function acceptTransitionByName($name)
     {
         $this->acceptTransition(

@@ -26,7 +26,11 @@ interface ContextInterface
     public function setState(StateInterface $state);
 
     /**
-     * Delegate action handle to state
+     * Delegate action handle to the current state
+     * 
+     * @param string $name
+     * @param array $properties
+     * @return mixed
      */
-    public function delegateAction($name, $properties = array());
+    public function delegateAction($name, array $properties);
 }
