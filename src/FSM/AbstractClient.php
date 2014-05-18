@@ -4,6 +4,9 @@ namespace FSM;
 use FSM\Context\ContextInterface;
 use FSM\State\StateInterface;
 use FSM\Transition\TransitionInterface;
+use FSM\Exception\ClientException;
+
+use Exception=
 
 /**
  * Abstract client.
@@ -58,7 +61,9 @@ abstract class AbstractClient
 	public function getCurrentState()
     {   
 		if (!($this->context instanceof ContextInterface)) {
-			throw new \Exception('Can not get current state. Context schould be set first.');
+			throw new ClientException(
+			    'Can not get current state. Context schould be set first.'
+            );
 		}
 
 		return $this->context->getState();
@@ -101,16 +106,18 @@ abstract class AbstractClient
 	public function addState(StateInterface $state)
     {        
 		if (!($this->context instanceof ContextInterface)) {
-			throw new \Exception("Context schould be set first.");
+			throw new ClientException("Context schould be set first.");
 		}
         if (!($state->getName())) {
-            throw new \Exception("Can not register state without a name.");
+            throw new ClientException("Can not register state without a name.");
         }        
         if ($this->getStateByName($state->getName()) !== null) {
-            throw new \Exception("Can not register state. The state with the same name already exists.");
+            throw new ClientException(
+                "Can not register state. The state with the same name already exists."
+            );
         }        
         if (!($state->isFinite() || $state->isInitial() || $state->isRegular())) {
-            throw new \Exception("Can not add state without a type.");
+            throw new ClientException("Can not add state without a type.");
         }
 
 		$state->setContext($this->context);
@@ -130,13 +137,17 @@ abstract class AbstractClient
 	public function addTransition(TransitionInterface $transition, StateInterface $sourceState, StateInterface $targetState)
     {
 		if (!($transition->getName())) {
-			throw new \Exception("Can not register transition without a name.");
+			throw new ClientException("Can not register transition without a name.");
 		}
 		if ($this->getTransitionByName($transition->getName()) !== null) {
-			throw new \Exception("Can not register transition. The transition with the same name already exists.");
+			throw new ClientException(
+			    "Can not register transition. The transition with the same name already exists."
+            );
 		}
         if (!array_search($sourceState, $this->states) || !array_search($targetState, $this->states)) {
-            throw new \Exception("Can not register transition. Wrong state selected as an end point.");
+            throw new ClientException(
+                "Can not register transition. Wrong state selected as an end point."
+            );
         }
 
         $transition->setSourceState($sourceState);
@@ -149,10 +160,10 @@ abstract class AbstractClient
 	public function setInitialState($state)
 	{
 	    if (!$state->isInitial()) {
-	        throw new \Exception("The first state should be of type Initial.");
+	        throw new ClientException("The first state should be of type Initial.");
 	    }
 	    if (!in_array($state, $this->states)) {
-	        throw new \Exception("State was never registered.s");
+	        throw new ClientException("State was never registered.s");
 	    }
 	    
 	    $this->context->setState($state);
@@ -167,22 +178,24 @@ abstract class AbstractClient
 	public function acceptTransition(TransitionInterface $transition)
     {
 		if (!array_search($transition, $this->transitions)) {
-			throw new \Exception("Error while accepting a transition. Transition doesn't exist for the current client.");
+			throw new ClientException(
+			    "Error while accepting a transition. Transition doesn't exist for the current client."
+	        );
 		}
         if (!$transition->isAcceptible()) {
-            throw new \Exception("Transition can not be accepted");
+            throw new ClientException("Transition can not be accepted");
         }
         if (!$this->getStatesByType(StateInterface::TYPE_FINITE)) {
-            throw new \Exception("Can not accept transition. Not any state of type finite exists.");
+            throw new ClientException("Can not accept transition. Not any state of type finite exists.");
         }
         if (!$this->getStatesByType(StateInterface::TYPE_INITIAL)) {
-            throw new \Exception("Can not accept transition. Not any state of type inital exists.");
+            throw new ClientException("Can not accept transition. Not any state of type inital exists.");
         }
         if (!($this->context->getState() instanceof StateInterface)) {
-            throw new \Exception("The initial state should be set first.");
+            throw new ClientException("The initial state should be set first.");
         }
         if ($this->context->getState()->isFinite()) {
-            throw new \Exception("Can not run transition in the finite state.");
+            throw new ClientException("Can not run transition in the finite state.");
         }
 
         $transition->accept();
