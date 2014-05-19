@@ -16,14 +16,14 @@ class State implements StateInterface
     protected $name;
     
     /**
-     * @var \FSM\Context\ContextInterface
-     */
-    protected $context;
-    
-    /**
      * @var integer
      */
     protected $type;
+    
+    /**
+     * @var \FSM\Context\ContextInterface
+     */
+    protected $context;    
     
     /**
      * @see \FSM\State\StateInterface::getName()
@@ -91,20 +91,23 @@ class State implements StateInterface
     {
         if ($type === self::TYPE_INITIAL || $type === self::TYPE_REGULAR || $type === self::TYPE_FINITE) {
             $this->type = $type;
+            
+            return $this;
         }
     
-        return $this;
+        throw new \InvalidArgumentException(sprintf(
+            "Wrong state type: '%s'. State type can be of type: StateInterface::TYPE_INITIAL,"
+            . "StateInterface::TYPE_REGULAR or StateInterface::TYPE_FINITE",
+            $type
+        ));
     }
 
     /**
      * @see \FSM\State\StateInterface::setContext()
      */
     public function setContext(ContextInterface $context)
-    {
-        if (!($this->context instanceof ContextInterface)) {
-            $this->context = $context;
-        }
-        
+    {   
+        $this->context = $context;
         return $this;
     }
     
@@ -114,10 +117,15 @@ class State implements StateInterface
     public function handleAction($name, array $parameters = array())
     {
         if (!method_exists($this, $name)) {
-            throw new \Exception("Method doesn't exist.");
-        }
-        if (!is_callable(array($this, $name))) {
-            throw new \Exception("Method is not callable.");
+            throw new \BadMethodCallException(sprintf(
+                "Method '%s' doesn't exist.",
+                $name
+            ));
+        } elseif (!is_callable(array($this, $name))) {
+            throw new \BadMethodCallException(
+                "Method '%s' is not callable.",
+                $name
+            );
         }
 
         return call_user_func_array(array($this, $name), $parameters);            

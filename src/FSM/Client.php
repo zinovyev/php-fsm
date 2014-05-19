@@ -11,11 +11,50 @@ use FSM\Context\Context;
  */
 class Client extends AbstractClient
 {
+    /**
+     * Create new context object
+     */
     public function __construct()
     {
         $this->context = new Context();
     }
 
+    /**
+     * Call state function
+     * 
+     * @param string $name
+     * @param array $parameters
+     * @return mixed
+     */
+    public function __call($name, array $parameters = [])
+    {
+        return $this->callAction($name, $parameters);
+    }
+    
+    /**
+     * Set property
+     * 
+     * @param string $name
+     * @param mixed $value
+     * @return \FSM\Client
+     */
+    public function __set($name, $value)
+    {
+        $this->context
+            ->addProperty($name, $value);
+        
+        return $this;
+    }
+    
+    /**
+     * Get property
+     * 
+     * @param string $name
+     */
+    public function __get($name) {
+        return $this->getProperty($name);
+    }
+    
     /**
      * Transition factory
      * 

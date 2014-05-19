@@ -8,7 +8,7 @@ use FSM\State\StateInterface;
  * 
  * @author vanya
  */
-class Context implements ContextInterface, ContextHasPropertiesInterface
+class Context implements ContextInterface, ContextWithPropertiesInterface
 {
     /**
      * @var \FSM\State\StateInterface;
@@ -20,7 +20,7 @@ class Context implements ContextInterface, ContextHasPropertiesInterface
      * 
      * @var array;
      */
-    protected $properties;
+    protected $properties = [];
     
     /**
      * @see \FSM\Context\ContextInterface::getState()
@@ -43,7 +43,11 @@ class Context implements ContextInterface, ContextHasPropertiesInterface
      */
     public function getProperty($name)
     {
-        return $this->properties[$name];
+        if (array_key_exists($name, $this->properties)) {
+            return $this->properties[$name];
+        }
+        
+        return null;
     }
     
     /**
@@ -57,9 +61,9 @@ class Context implements ContextInterface, ContextHasPropertiesInterface
     /**
      * @see \FSM\Context\ContextHasPropertiesInterface::setProperty()
      */
-    public function setProperty($name, $value)
+    public function addProperty($name, $value)
     {
-        $this->properties[$name] = $value;
+        $this->properties[(string) $name] = $value;
         
         return $this;
     }
@@ -69,6 +73,7 @@ class Context implements ContextInterface, ContextHasPropertiesInterface
      */
     public function delegateAction($name, array $parameters = array())
     {
-        return $this->state->handleAction($name, $parameters);
+        return $this->state
+            ->handleAction((string) $name, $parameters);
     }
 }

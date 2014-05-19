@@ -6,7 +6,7 @@ namespace FSM\Context;
  * 
  * @author Ivan Zinovyev <vanyazin@gmail.com>
  */
-interface ContextHasPropertiesInterface extends ContextInterface
+interface ContextWithPropertiesInterface extends ContextInterface
 {
 
     /**
@@ -31,5 +31,5 @@ interface ContextHasPropertiesInterface extends ContextInterface
      * @param $value mixed
      * @return \FSM\Context\ContextHasPropertiesInterface
      */
-    public function setProperty($name, $value);
+    public function addProperty($name, $value);
 }

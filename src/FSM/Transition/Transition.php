@@ -39,7 +39,6 @@ class Transition implements TransitionInterface
     }
     
     /**
-     * (non-PHPdoc)
      * @see \FSM\Transition\TransitionInterface::getName()
      */
     public function getName()
@@ -48,7 +47,6 @@ class Transition implements TransitionInterface
     }
     
     /**
-     * (non-PHPdoc)
      * @see \FSM\Transition\TransitionInterface::setName()
      */
     public function setName($name)
@@ -57,7 +55,6 @@ class Transition implements TransitionInterface
     }
     
     /**
-     * (non-PHPdoc)
      * @see \FSM\Transition\TransitionInterface::setSourceState()
      */
     public function setSourceState(StateInterface $state)
@@ -66,7 +63,11 @@ class Transition implements TransitionInterface
             $this->targetState instanceof StateInerface
             && $this->targetState->getContext() !== $state->getContext()
         ) {
-            throw new \Exception('Invalid source state applied for transaction');
+            throw new \InvalidArgumentException(
+                "Invalid source state applied for transaction. The source "
+                . "State context MUST be attached to the same Context class as "
+                . "the target State."
+            );
         }
 
         $this->sourceState = $state;
@@ -74,7 +75,6 @@ class Transition implements TransitionInterface
     }
     
     /**
-     * (non-PHPdoc)
      * @see \FSM\Transition\TransitionInterface::setTargetState()
      */
     public function setTargetState(StateInterface $state)
@@ -83,7 +83,11 @@ class Transition implements TransitionInterface
         $this->sourceState instanceof StateInerface
         && $this->sourceState->getContext() !== $state->getContext()
         ) {
-            throw new \Exception('Invalid target state applied for transaction');
+            throw new \InvalidArgumentException(
+                "Invalid target state applied for transaction. The target "
+                . "State context MUST be attached to the same Context class as "
+                . "the source State."
+            );
         }
         
 
@@ -92,7 +96,6 @@ class Transition implements TransitionInterface
     }
     
     /**
-     * (non-PHPdoc)
      * @see \FSM\Transition\TransitionInterface::isAcceptible()
      */
     public function isAcceptible()
@@ -104,11 +107,22 @@ class Transition implements TransitionInterface
     }
     
     /**
-     * (non-PHPdoc)
      * @see \FSM\Transition\TransitionInterface::accept()
      */
     public function accept()
     {
-        $this->sourceState->getContext()->setState($this->targetState);
+        if ($this->isAcceptible()) {
+            $this->sourceState
+                ->getContext()
+                ->setState(
+                    $this->targetState
+                );
+
+            return $this;
+        }
+        
+       throw new \BadMethodCallException(
+	       "Current transition can not be accepted"
+       );
     }
 }
