@@ -136,7 +136,7 @@ printf("%d) State machine is at SAME state: '%s'. Test function call result is: 
 ```
 1) State machine is at state: 'stateA'. Test function call result is: '100
 2) State machine is at SAME state: 'stateA'. Test function call result is: '200
-3) State machine is at SAME state: 'stateC'. Test function call result is: 'rab oof
-4) State machine is at SAME state: 'stateD'. Test function call result is: '2
-5) State machine is at SAME state: 'stateB'. Test function call result is: '4
+3) State machine is at state: 'stateC'. Test function call result is: 'rab oof
+4) State machine is at state: 'stateD'. Test function call result is: '2
+5) State machine is at state: 'stateB'. Test function call result is: '4
 ```
