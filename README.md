@@ -15,8 +15,7 @@ For installing the FSM machine use Composer. Simply add following to your compos
 
 ## Creating a State machine steps:
 1. Create State classes and define states:
-
-```php
+⋅⋅```php
 class StateA extends State
 {
     public function foo($name)
@@ -29,7 +28,7 @@ class StateA extends State
 2. Create a new FSM\Client instance (StateMachine).
 3. Bind your States to the Client instance, apply transactions and set initial state:
 
-```php
+⋅⋅```php
 class StateMachine extends Client
 {
     public function __construct()
@@ -43,31 +42,26 @@ class StateMachine extends Client
             /* ... */
             ->createTransition('fourth', 'stateA', 'stateB')
             /* ... */
-
 ```
-
-or
-
-```php
+⋅⋅or
+⋅⋅```php
 $stateMachine = new Client;
-$stateMachine->->addState($stateA);
-$stateMachine->->addState($stateB);
-->createTransition('fourth', 'stateA', 'stateB');
+$stateMachine
+    ->addState($stateA)
+    ->addState($stateB)
+    ->createTransition('fourth', 'stateA', 'stateB')
+;
 ```
 
 4. Use Memento if you want do store current State and parameters and restore them later:
-
-```php
+⋅⋅```php
 $memento = $stateMachine->createMemento();
 ```
-
-and restore:
-
-```php
+⋅⋅and restore:
+⋅⋅```php
 $stateMachine = new StateMachine();
 $stateMachine->applyMemento($memento);
 ```
-
 
 5. That's all =) Your simple State machine is now configured and ready for use!
 
