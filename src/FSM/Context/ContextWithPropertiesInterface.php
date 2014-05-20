@@ -32,4 +32,11 @@ interface ContextWithPropertiesInterface extends ContextInterface
      * @return \FSM\Context\ContextHasPropertiesInterface
      */
     public function addProperty($name, $value);
+    
+    /**
+     * Drop property by name
+     * 
+     * @param string $name
+     */
+    public function dropProperty($name);
 }

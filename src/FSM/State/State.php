@@ -11,16 +11,22 @@ use FSM\Context\ContextInterface;
 class State implements StateInterface
 {
     /**
+     * State name
+     * 
      * @var strings
      */
     protected $name;
     
     /**
+     * State type
+     * 
      * @var integer
      */
-    protected $type;
+    protected $type = self::TYPE_REGULAR;
     
     /**
+     * State Context subject
+     * 
      * @var \FSM\Context\ContextInterface
      */
     protected $context;    

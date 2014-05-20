@@ -52,7 +52,8 @@ class Client extends AbstractClient
      * @param string $name
      */
     public function __get($name) {
-        return $this->getProperty($name);
+        return $this->context
+            ->getProperty($name);
     }
     
     /**

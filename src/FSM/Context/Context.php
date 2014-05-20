@@ -67,6 +67,17 @@ class Context implements ContextInterface, ContextWithPropertiesInterface
         
         return $this;
     }
+    
+    /**
+     * @see \FSM\Context\ContextWithPropertiesInterface::dropProperty()
+     */
+    public function dropProperty($name)
+    {
+        $this->property[$name] = null;
+        unset($this->property[$name]);
+        
+        return $this;
+    }
   
     /**
      * @see \FSM\Context\ContextInterface::delegateAction()

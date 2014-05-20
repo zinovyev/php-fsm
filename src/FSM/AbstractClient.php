@@ -7,13 +7,16 @@ use FSM\Transition\TransitionInterface;
 use FSM\Exception\ClientInitializationException;
 use FSM\Exception\ComponentConfigurationException;
 use FSM\Exception\StateExecutionException;
+use FSM\ContextMemento\OriginatorInterface;
+use FSM\ContextMemento\MementoInterface;
+use FSM\ContextMemento\Memento;
 
 /**
  * Abstract client.
  *
  * @author Ivan Zinovyev <vanyazin@gmail.com>
  */
-abstract class AbstractClient
+abstract class AbstractClient implements OriginatorInterface
 {
 	/**
      * @var \FSM\Context\ContextInterface|null
@@ -181,6 +184,8 @@ abstract class AbstractClient
 	    
 	    $this->context
 	       ->setState($state);
+	    
+	    return $this;
 	}
 	
     /**
@@ -263,6 +268,44 @@ abstract class AbstractClient
                 $ex
             );
         }
+    }
+    
+    /**
+     * @see \FSM\ContextMemento\OriginatorInterface::createMemento()
+     */
+    public function createMemento()
+    {
+        $memento = new Memento(
+            $this->getCurrentState()->getName(),
+            $this->context->getProperties()
+        );
+        
+        return $memento;
+    }
+    
+    /**
+     * @see \FSM\ContextMemento\OriginatorInterface::applyMemento()
+     * @return \FSM\AbstractClient
+     */
+    public function applyMemento(MementoInterface $memento)
+    {
+        // Restore current State
+        $this->context
+            ->setState(
+                $this->getStateByName($memento->getStateName())
+            );
+        
+        // Drop properties
+        foreach ($this->context->getProperties() as $name => $value) {
+            $this->context->dropProperty($name);
+        }
+        
+        // Restore properties
+        foreach ($memento->getProperties() as $name => $value) {
+            $this->context->addProperty($name, $value);
+        }
+        
+        return $this;
     }
     
     /**
