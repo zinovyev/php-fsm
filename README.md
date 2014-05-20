@@ -1,7 +1,5 @@
-php-fsm
+PHP Finite-state Machine
 =======
-
-# PHP Finite-state Machine
 
 Finite-state machine allows you to create an object, containing different states and transitions between them,
 that can change its behaivour according to the current state.
@@ -16,10 +14,62 @@ For installing the FSM machine use Composer. Simply add following to your compos
 ```
 
 ## Creating a State machine steps:
-1. Create an FSM\Client instance
-2. Define your states classes, names and types
-3. Add your states to the State machine, define transitions and an initial state
-4. That's all =) Your simple State machine is now configured and ready for use!
+1. Create State classes and define states:
+
+```php
+class StateA extends State
+{
+    public function foo($name)
+    {
+        printf("Hello, %s!", $name);
+    }
+}
+```
+
+2. Create a new FSM\Client instance (StateMachine).
+3. Bind your States to the Client instance, apply transactions and set initial state:
+
+```php
+class StateMachine extends Client
+{
+    public function __construct()
+    {
+        parent::__construct();
+        
+        /* ... */
+        
+        $this
+            ->addState($stateA)
+            /* ... */
+            ->createTransition('fourth', 'stateA', 'stateB')
+            /* ... */
+
+```
+
+or
+
+```php
+$stateMachine = new Client;
+$stateMachine->->addState($stateA);
+$stateMachine->->addState($stateB);
+->createTransition('fourth', 'stateA', 'stateB');
+```
+
+4. Use Memento if you want do store current State and parameters and restore them later:
+
+```php
+$memento = $stateMachine->createMemento();
+```
+
+and restore:
+
+```php
+$stateMachine = new StateMachine();
+$stateMachine->applyMemento($memento);
+```
+
+
+5. That's all =) Your simple State machine is now configured and ready for use!
 
 ## Example code:
 ```php
