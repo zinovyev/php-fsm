@@ -9,7 +9,7 @@ that can change its behaivour according to the current state.
 For installing the FSM machine use Composer. Simply add following to your composer.json file:
 ```json
     "require": {
-        "zinovyev/php-fsm": "v0.65"
+        "zinovyev/php-fsm": "v0.6.5"
     }
 ```
 
