@@ -5,32 +5,32 @@ use FSM\Context\ContextInterface;
 
 /**
  * Default State class
- * 
+ *
  * @author Ivan Zinovyev <vanyazin@gmail.com>
  */
 class State implements StateInterface
 {
     /**
      * State name
-     * 
+     *
      * @var strings
      */
     protected $name;
-    
+
     /**
      * State type
-     * 
-     * @var integer
+     *
+     * @var string
      */
     protected $type = self::TYPE_REGULAR;
-    
+
     /**
      * State Context subject
-     * 
+     *
      * @var \FSM\Context\ContextInterface
      */
-    protected $context;    
-    
+    protected $context;
+
     /**
      * @see \FSM\State\StateInterface::getName()
      */
@@ -38,7 +38,7 @@ class State implements StateInterface
     {
         return $this->name;
     }
-    
+
     /**
      * @see \FSM\State\StateInterface::getType()
      */
@@ -46,7 +46,7 @@ class State implements StateInterface
     {
         return $this->type;
     }
-    
+
     /**
      * @see \FSM\State\StateInterface::getContext()
      */
@@ -54,7 +54,7 @@ class State implements StateInterface
     {
         return $this->context;
     }
-    
+
     /**
      * @see \FSM\State\StateInterface::isInitial()
      */
@@ -70,7 +70,7 @@ class State implements StateInterface
     {
         return $this->type === self::TYPE_REGULAR;
     }
-    
+
     /**
      * @see \FSM\State\StateInterface::isFinite()
      */
@@ -78,17 +78,17 @@ class State implements StateInterface
     {
         return $this->type === self::TYPE_FINITE;
     }
-    
+
     /**
      * Set state name
-     * 
+     *
      * @param string $name
      */
     public function setName($name)
     {
         $this->name = $name;
     }
-    
+
     /**
      * @param string $type
      * @return \FSM\State\State
@@ -97,10 +97,10 @@ class State implements StateInterface
     {
         if ($type === self::TYPE_INITIAL || $type === self::TYPE_REGULAR || $type === self::TYPE_FINITE) {
             $this->type = $type;
-            
+
             return $this;
         }
-    
+
         throw new \InvalidArgumentException(sprintf(
             "Wrong state type: '%s'. State type can be of type: StateInterface::TYPE_INITIAL,"
             . "StateInterface::TYPE_REGULAR or StateInterface::TYPE_FINITE",
@@ -112,11 +112,11 @@ class State implements StateInterface
      * @see \FSM\State\StateInterface::setContext()
      */
     public function setContext(ContextInterface $context)
-    {   
+    {
         $this->context = $context;
         return $this;
     }
-    
+
     /**
      * @see \FSM\State\StateInterface::handleAction()
      */
@@ -134,6 +134,6 @@ class State implements StateInterface
             );
         }
 
-        return call_user_func_array(array($this, $name), $parameters);            
+        return call_user_func_array(array($this, $name), $parameters);
     }
 }

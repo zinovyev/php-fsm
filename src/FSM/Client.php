@@ -32,7 +32,7 @@ class Client implements ClientInterface
      *
      * @var string
      */
-    protected $currentState = State::TYPE_INITIAL;
+    protected $currentState = null;
 
     public function __constructor()
     {
@@ -54,12 +54,12 @@ class Client implements ClientInterface
         }
 
         // Check if there're no other initial states
-        if ($state->isInitial()) {
-            {
-                throw new LogicException(
+        if ($state->isInitial() && $this->verifyInitialStateExists()) {
+            throw new LogicException(
                     "Only one initial state should be used!"
             );
-        }
+        } elseif ($state->isInitial()) {
+            $this->currentState = $stateAlias;
         }
         $this->states->set($stateAlias, $state);
 
@@ -90,6 +90,10 @@ class Client implements ClientInterface
             ->filter(function ($transition) use ($stateAlias) {
                 return !in_array($stateAlias, $transition);
             });
+
+        if ($this->states->get($stateAlias)->isInitial()) {
+            $this->currentState = null;
+        }
 
         $this->states->remove($stateAlias);
         return $this;
@@ -308,6 +312,7 @@ class Client implements ClientInterface
             && !$this->transitions->isEmpty()
             && $this->verifyInitialStateExists()
             && $this->verifyFinalStateExists()
+            && $this->stateAlias
         ) {
             return true;
         }
