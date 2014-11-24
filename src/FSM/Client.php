@@ -3,7 +3,7 @@ namespace FSM;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use FSM\Exception\LogicException;
-use FSM\State\State;
+use FSM\State\StateInterface;
 
 /**
  * Basic Client.
@@ -44,13 +44,22 @@ class Client implements ClientInterface
      * (non-PHPdoc)
      * @see \FSM\ClientInterface::addState()
      */
-    public function addState($stateAlias, State $state)
+    public function addState($stateAlias, StateInterface $state)
     {
         if ($this->hasState($stateAlias)) {
             throw new LogicException(sprintf(
                 "States overlapping! The state %s already exists",
                 $stateAlias
             ));
+        }
+
+        // Check if there're no other initial states
+        if ($state->isInitial()) {
+            {
+                throw new LogicException(
+                    "Only one initial state should be used!"
+            );
+        }
         }
         $this->states->set($stateAlias, $state);
 
@@ -72,6 +81,16 @@ class Client implements ClientInterface
      */
     public function removeState($stateAlias)
     {
+        if (!$this->hasState($stateAlias)) {
+            return $this;
+        }
+
+        // Drop all related transitions
+        $this->transitions = $this->transitions
+            ->filter(function ($transition) use ($stateAlias) {
+                return !in_array($stateAlias, $transition);
+            });
+
         $this->states->remove($stateAlias);
         return $this;
     }
@@ -255,11 +274,44 @@ class Client implements ClientInterface
     }
 
     /**
+     * @return boolean
+     */
+    protected function verifyInitialStateExists()
+    {
+        $initialStates = $this->states->filter(function ($state) {
+            return $state->isInitial();
+        });
+
+        return !$initialStates->isEmpty();
+    }
+
+    /**
+     * @return boolean
+     */
+    protected function verifyFinalStateExists()
+    {
+        $initialStates = $this->states->filter(function ($state) {
+            return $state->isFinal();
+        });
+
+        return !$initialStates->isEmpty();
+    }
+
+    /**
      * (non-PHPdoc)
      * @see \FSM\ClientInterface::verify()
      */
     public function verify()
     {
+        if (
+            !$this->states->isEmpty()
+            && !$this->transitions->isEmpty()
+            && $this->verifyInitialStateExists()
+            && $this->verifyFinalStateExists()
+        ) {
+            return true;
+        }
 
+        return false;
     }
 }
