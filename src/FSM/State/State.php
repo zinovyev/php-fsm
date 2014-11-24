@@ -74,9 +74,9 @@ class State implements StateInterface
     /**
      * @see \FSM\State\StateInterface::isFinite()
      */
-    public function isFinite()
+    public function isFinal()
     {
-        return $this->type === self::TYPE_FINITE;
+        return $this->type === self::TYPE_FINAL;
     }
 
     /**
@@ -95,7 +95,7 @@ class State implements StateInterface
      */
     public function setType($type)
     {
-        if ($type === self::TYPE_INITIAL || $type === self::TYPE_REGULAR || $type === self::TYPE_FINITE) {
+        if ($type === self::TYPE_INITIAL || $type === self::TYPE_REGULAR || $type === self::TYPE_FINAL) {
             $this->type = $type;
 
             return $this;

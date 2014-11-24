@@ -34,7 +34,7 @@ class Client implements ClientInterface
      */
     protected $currentState = null;
 
-    public function __constructor()
+    public function __construct()
     {
         $this->states = new ArrayCollection();
         $this->transitions = new ArrayCollection();
@@ -312,7 +312,7 @@ class Client implements ClientInterface
             && !$this->transitions->isEmpty()
             && $this->verifyInitialStateExists()
             && $this->verifyFinalStateExists()
-            && $this->stateAlias
+            && $this->currentState
         ) {
             return true;
         }

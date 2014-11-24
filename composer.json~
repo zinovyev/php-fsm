@@ -1,0 +1,21 @@
+{
+    "name": "zinovyev/php-fsm",
+    "description": "PHP Finite-state Machine",
+    "keywords": ["finite-state", "machine", "automaton", "statemachine", "state", "transition"],
+    "license": "GPLv2",
+    "authors": [
+        {
+            "name": "Ivan Zinovyev",
+            "email": "ivan@zinovyev.net"
+        }
+    ],
+    "require": {
+        "php":  ">=5.4",
+        "doctrine/collections": ">=1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "FSM\\": "src/FSM"
+        }
+    }
+}
