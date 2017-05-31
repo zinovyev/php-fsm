@@ -55,6 +55,14 @@ class Transition implements TransitionInterface
     }
     
     /**
+     * @see \FSM\Transition\TransitionInterface::getSourceState()
+     */
+    public function getSourceState()
+    {
+        return $this->sourceState;
+    }
+    
+    /**
      * @see \FSM\Transition\TransitionInterface::setSourceState()
      */
     public function setSourceState(StateInterface $state)
@@ -72,6 +80,15 @@ class Transition implements TransitionInterface
 
         $this->sourceState = $state;
         return $this;
+    }
+    
+    /**
+     * 
+     * @see \FSM\Transition\TransitionInterface::getTargetState()
+     */
+    public function getTargetState()
+    {
+        return $this->targetState;
     }
     
     /**
