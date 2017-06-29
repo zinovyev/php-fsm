@@ -12,6 +12,13 @@ use FSM\Context\Context;
 class Client extends AbstractClient
 {
     /**
+     * Source state of transition
+     * 
+     * @var string
+     */
+    private $sourceState;
+    
+    /**
      * Create new context object
      */
     public function __construct()
@@ -83,10 +90,33 @@ class Client extends AbstractClient
      */
     public function acceptTransitionByName($name)
     {
+        $transition = $this->getTransitionByName($name);
         $this->acceptTransition(
-            $this->getTransitionByName($name)
+            $transition
         );
         
+        $this->setSourceState($transition);
+        
         return $this;
+    }
+    
+    /**
+     * Set source state of the transition were made
+     * 
+     * @param \FSM\Transition\TransitionInterface $transition
+     */
+    private function setSourceState($transition)
+    {
+        $this->sourceState = $transition->getSourceState();
+    }
+    
+    /**
+     * Get source state of the transition were made
+     * 
+     * @return \FSM\State\StateInterface
+     */
+    public function getSourceState()
+    {
+        return $this->sourceState;
     }
 }
